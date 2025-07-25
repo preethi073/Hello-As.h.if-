@@ -20,16 +20,6 @@
       text-align: center;
     }
 
-    #passwordContainer {
-      font-size: 24px;
-      color: white;
-    }
-
-    #dash {
-      display: inline-block;
-      width: 20px;
-    }
-
     #inputArea {
       outline: none;
       border: none;
@@ -37,6 +27,10 @@
       color: white;
       font-size: 24px;
       caret-color: white;
+      border-bottom: 2px solid white;  /* bottom dash */
+      padding: 5px 0;
+      width: 200px;
+      text-align: center;
     }
 
     #message, #clue {
@@ -55,9 +49,8 @@
 </head>
 <body>
   <div id="container">
-    <div id="passwordContainer">
-      <span id="dash">—</span>
-      <span id="inputArea" contenteditable="true" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></span>
+    <div id="inputArea" contenteditable="true"
+         spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off">
     </div>
     <div id="message"></div>
     <div id="clue"></div>
@@ -81,16 +74,14 @@ Remember this: follow the stars, and they shall follow you.`;
     let attempts = 0;
     const maxAttemptsBeforeClue = 3;
 
-    // Focus input on page load
     inputArea.focus();
 
-    // Prevent default ENTER behavior (new line)
     inputArea.addEventListener("keydown", function(event) {
       if (event.key === "Enter") {
         event.preventDefault();
         const entered = inputArea.innerText.trim();
         if (entered === correctPassword) {
-          document.getElementById("passwordContainer").style.display = "none";
+          inputArea.style.display = "none";
           messageDiv.textContent = "";
           clueDiv.textContent = "";
           typeOutText(secretText, messageDiv);
