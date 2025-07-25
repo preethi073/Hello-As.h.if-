@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Entry</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #container {
+      text-align: center;
+    }
+
+    #passwordInput {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      outline: none;
+      width: 200px;
+      caret-color: white;
+    }
+
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px black inset;
+      -webkit-text-fill-color: white;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+      white-space: pre-wrap;
+    }
+
+    #clue {
+      color: #888;
+      font-size: 16px;
+      margin: 20px auto 0 auto;
+      max-width: 700px;
+      text-align: center;
+      white-space: normal;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <input id="passwordInput" type="password" autofocus 
+           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    <div id="message"></div>
+    <div id="clue"></div>
+  </div>
+
+  <script>
+    const passwordInput = document.getElementById("passwordInput");
+    const messageDiv = document.getElementById("message");
+    const clueDiv = document.getElementById("clue");
+
+    const correctPassword = "Us";  // Change this
+    const secretText = 'Access granted. Welcome to the Black Box.\n A mystery unfolds — one that sees through and beyond.\n Here, time drifts and memory echoes… not all as it seems.\n In or out, the lines are blurred — How far will you wander?\n Remember this: follow the stars, and they shall follow you.';  // Change this
+    const clueText = "I'll quote a line:\n'If you walk into a room and notice what is missing from it,\nIt's still there, isn't it?\nThe first poem I wrote that wasn't about you was still about you.'\n– What We Buried";  // Change this
+
+    let attempts = 0;
+    const maxAttemptsBeforeClue = 3;
+
+    passwordInput.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        if (passwordInput.value === correctPassword) {
+          passwordInput.style.display = "none";
+          messageDiv.textContent = "";
+          clueDiv.textContent = "";
+          typeOutText(secretText, messageDiv);
+        } else {
+          attempts++;
+          passwordInput.value = "";
+          messageDiv.textContent = "Incorrect password. Try again.";
+
+          if (attempts >= maxAttemptsBeforeClue) {
+            clueDiv.textContent = clueText;
+          }
+
+          setTimeout(() => messageDiv.textContent = "", 2000);
+        }
+      }
+    });
+
+    function typeOutText(text, element, index = 0) {
+      if (index < text.length) {
+        element.textContent += text.charAt(index);
+        setTimeout(() => typeOutText(text, element, index + 1), 50);
+      }
+    }
+  </script>
+</body>
+</html>
